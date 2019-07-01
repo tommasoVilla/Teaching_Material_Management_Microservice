@@ -1,5 +1,7 @@
 package it.uniroma2.dicii.sdcc.teaching_material_management.Dao;
 import com.amazonaws.HttpMethod;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -27,7 +29,10 @@ public class FileDAO {
     /* findByPrefix return the names of the documents in Amazon S3 data-store starting with given prefix*/
     public ArrayList<String> findByPrefix(String prefix){
 
-        AmazonS3 amazonS3 = AmazonS3ClientBuilder.standard().withCredentials(new ProfileCredentialsProvider()).build();
+
+//        AmazonS3 amazonS3 = AmazonS3ClientBuilder.standard().withCredentials(new ProfileCredentialsProvider()).build();
+
+        AmazonS3 amazonS3 = AmazonS3ClientBuilder.defaultClient();
 
         ObjectListing objectListing = amazonS3.listObjects(bucketName, prefix);
         List<S3ObjectSummary> objectSummaries = objectListing.getObjectSummaries();
@@ -48,7 +53,10 @@ public class FileDAO {
        The link is generated using microservice's AWS Credentials and has a temporary valence. */
     public String generateTemporaryUploadLink(String fileName) throws FileAlreadyExistsException {
 
-        AmazonS3 amazonS3 = AmazonS3ClientBuilder.standard().withCredentials(new ProfileCredentialsProvider()).build();
+        //        AmazonS3 amazonS3 = AmazonS3ClientBuilder.standard().withCredentials(new ProfileCredentialsProvider()).build();
+
+        AmazonS3 amazonS3 = AmazonS3ClientBuilder.defaultClient();
+
 
         // Set the presigned URL to expire after ten minuts.
         Date expiration = generateExpiredTime(10);
@@ -70,7 +78,9 @@ public class FileDAO {
        filename. The link is generated using microservice's AWS Credentials and has a temporary valence. */
     public String generateTemporaryDownloadLink(String fileName) throws NotSuchFileException {
 
-        AmazonS3 amazonS3 = AmazonS3ClientBuilder.standard().withCredentials(new ProfileCredentialsProvider()).build();
+//        AmazonS3 amazonS3 = AmazonS3ClientBuilder.standard().withCredentials(new ProfileCredentialsProvider()).build();
+
+        AmazonS3 amazonS3 = AmazonS3ClientBuilder.defaultClient();
 
         // Set the presigned URL to expire after ten minuts.
         Date expiration = generateExpiredTime(10);

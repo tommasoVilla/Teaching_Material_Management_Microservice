@@ -56,9 +56,4 @@ public class ControllerRest {
         ArrayList<String> objectNames = controllerGRASP.listObjectByPrefix(prefix);
         return new ResponseEntity<>(objectNames, HttpStatus.OK);
     }
-
-    @RequestMapping(method = RequestMethod.GET, path ="" )
-    public ResponseEntity healthCheck()  {
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }
